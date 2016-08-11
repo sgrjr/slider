@@ -26,16 +26,15 @@ const middleware = webpackMiddleware(compiler, {
     }
   });
 
-  app.use(express.static('dist/assets'));
-  app.use('/', express.static('dist/assets'));
+  app.use(express.static(config.output.publicPath));
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
-  
+
   app.get('*', function response(req, res) {
-    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
+    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'public/index.html')));
     res.end();
   });
-  
+
 
 
 app.listen(port, '0.0.0.0', function onStart(err) {

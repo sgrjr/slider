@@ -5,6 +5,9 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+var assetsPath = path.join(__dirname, 'public');
+var publicPath = path.join(__dirname, 'public');
+
 module.exports = {
   devtool: 'eval-source-map',
   entry: [
@@ -13,8 +16,9 @@ module.exports = {
     path.join(__dirname, 'src/index.js')
   ],
   output: {
-    path: path.join(__dirname, '/dist/'),
-    filename: '[name].js'
+    path: assetsPath,
+    filename: '[name].js',
+    publicPath: publicPath
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -48,7 +52,13 @@ module.exports = {
 	test: /\.(ttf|eot)(\?[\s\S]+)?$/,
 	loader: 'file'
 	},
-  { test: /\.(png|jpg)$/, loader: 'file-loader?name=images/[name].[ext]' },
+        {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loaders: [
+            'file?hash=sha512&digest=hex&name=[hash].[ext]',
+            'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+          ]
+        }
 	]
   },
   node: {fs: 'empty', net: 'empty', tls: 'empty'},
